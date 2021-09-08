@@ -7,10 +7,11 @@ use App\Interfaces\IRobot;
 class Robot implements IRobot
 {
 
-    private static $params = array();
+    private $params = array();
 
-    public function __construct() {
-        self::$params = array(
+    public function __construct()
+    {
+        $this->params = array(
             'height' => null,
             'weight' => null,
             'speed' => null,
@@ -25,9 +26,9 @@ class Robot implements IRobot
      */
     public function set(string $param, $value)
     {
-        if( array_key_exists($param, self::$params) ) {
+        if( array_key_exists($param, $this->params) ) {
             if( !empty($value) ) {
-                self::$params[$param] = $value;
+                $this->params[$param] = $value;
             } else {
                 throw new \Exception('Не указано значение параметра [' . $param . ']');
             }
@@ -43,11 +44,15 @@ class Robot implements IRobot
      */
     public function get(string $param)
     {
-        if( array_key_exists($param, self::$params) ) {
-            return self::$params[$param];
+        if( array_key_exists($param, $this->params) ) {
+            return $this->params[$param];
         } else {
             throw new \Exception('Нету указаного параметра [' . $param . ']');
         }
+    }
+
+    public function getAllParams() {
+        return $this->params;
     }
 
     /**
@@ -55,7 +60,7 @@ class Robot implements IRobot
      */
     public function getRobot()
     {
-        foreach (self::$params as $param => $value) {
+        foreach ($this->params as $param => $value) {
             if( empty($value) ) throw new \Exception('Не указан параметр [' . $param . ']');
         }
         return $this;
